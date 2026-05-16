@@ -2203,6 +2203,9 @@ function generateStrukTopUp(tx) {
   let lines = [];
   lines.push('================================');
   lines.push(centerText(storeName.toUpperCase(), 32));
+  if (address) lines.push(centerText(address, 32));
+  if (phone) lines.push(centerText('HP: ' + phone, 32));
+  lines.push('================================');
   lines.push(centerText('BUKTI TOP UP SALDO', 32));
   lines.push('================================');
   lines.push('No Transaksi : ' + (tx.id || '-'));
@@ -2265,9 +2268,12 @@ function generateStrukTarik(tx) {
   const adminFee = tx.adminFee || 0;
   const received = nominal - adminFee;
 
-  let lines = [];
+    let lines = [];
   lines.push('================================');
   lines.push(centerText(storeName.toUpperCase(), 32));
+  if (address) lines.push(centerText(address, 32));
+  if (phone) lines.push(centerText('HP: ' + phone, 32));
+  lines.push('================================');
   lines.push(centerText('BUKTI TARIK TUNAI', 32));
   lines.push('================================');
   lines.push('No Transaksi : ' + (tx.id || '-'));
