@@ -1,0 +1,2327 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light" data-theme-color="indigo">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#6366f1">
+  <title>WebPOS - Pengaturan</title>
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Inline CSS -->
+  <style>
+/* WebPOS Modern CSS - Simplified */
+
+/* Theme Colors */
+:root{--primary:#6366f1;--primary-dark:#4f46e5;--secondary:#ec4899;--success:#10b981;--warning:#f59e0b;--danger:#ef4444;--info:#3b82f6}
+[data-theme-color="blue"]{--primary:#3b82f6;--primary-dark:#2563eb;--secondary:#06b6d4}
+[data-theme-color="green"]{--primary:#10b981;--primary-dark:#059669;--secondary:#84cc16}
+[data-theme-color="orange"]{--primary:#f97316;--primary-dark:#ea580c;--secondary:#f59e0b}
+[data-theme-color="purple"]{--primary:#8b5cf6;--primary-dark:#7c3aed;--secondary:#d946ef}
+[data-theme-color="red"]{--primary:#ef4444;--primary-dark:#dc2626;--secondary:#f97316}
+[data-theme-color="pink"]{--primary:#ec4899;--primary-dark:#db2777;--secondary:#8b5cf6}
+[data-theme-color="teal"]{--primary:#14b8a6;--primary-dark:#0d9488;--secondary:#06b6d4}
+[data-theme-color="ocean"]{--primary:#0ea5e9;--primary-dark:#0284c7;--secondary:#06b6d4}
+[data-theme-color="sunset"]{--primary:#f97316;--primary-dark:#ea580c;--secondary:#c026d3}
+[data-theme-color="midnight"]{--primary:#1e293b;--primary-dark:#0f172a;--secondary:#334155}
+
+/* Base */
+:root{--bg-primary:#f8fafc;--bg-secondary:#f1f5f9;--bg-card:#fff;--text-primary:#0f172a;--text-secondary:#475569;--text-muted:#94a3b8;--border-color:#e2e8f0;--shadow-sm:0 1px 2px rgba(0,0,0,0.05);--shadow-md:0 4px 6px rgba(0,0,0,0.1);--shadow-lg:0 10px 15px rgba(0,0,0,0.1);--radius-sm:0.375rem;--radius-md:0.5rem;--radius-lg:0.75rem;--radius-xl:1rem;--sidebar-width:280px;--sidebar-collapsed:76px;--header-height:70px;--bottom-nav-height:70px}
+
+[data-theme="dark"]{--bg-primary:#0f172a;--bg-secondary:#1e293b;--bg-card:#1e293b;--text-primary:#f8fafc;--text-secondary:#cbd5e1;--text-muted:#64748b;--border-color:#334155}
+
+*{margin:0;padding:0;box-sizing:border-box}
+html{font-size:16px;font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif}
+body{background:var(--bg-primary);color:var(--text-primary);line-height:1.6;min-height:100vh}
+
+/* Scrollbar */
+::-webkit-scrollbar{width:8px}
+::-webkit-scrollbar-track{background:var(--bg-secondary)}
+::-webkit-scrollbar-thumb{background:var(--text-muted);border-radius:9999px}
+
+/* Layout */
+.app-container{display:flex;min-height:100vh}
+
+/* Sidebar */
+.sidebar{position:fixed;top:0;left:0;width:var(--sidebar-width);height:100vh;background:var(--bg-card);border-right:1px solid var(--border-color);z-index:1000;display:flex;flex-direction:column;transition:all .25s}
+.sidebar.collapsed{width:var(--sidebar-collapsed)}
+@media(max-width:1024px){.sidebar{transform:translateX(-100%)}.sidebar.mobile-open{transform:translateX(0)}}
+
+.sidebar-header{padding:1.25rem;border-bottom:1px solid var(--border-color);display:flex;align-items:center;gap:1rem;min-height:var(--header-height)}
+.logo-container{display:flex;align-items:center;gap:.5rem}
+.logo-icon{width:42px;height:42px;background:linear-gradient(135deg,var(--primary),var(--secondary));border-radius:.75rem;display:flex;align-items:center;justify-content:center;color:white;font-weight:bold;font-size:1.25rem}
+.logo-text{font-size:1.35rem;font-weight:800;background:linear-gradient(135deg,var(--primary),var(--secondary));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.sidebar.collapsed .logo-text{opacity:0;width:0}
+
+.menu-toggle{position:absolute;right:-14px;top:24px;width:28px;height:28px;background:var(--primary);border:none;border-radius:50%;color:white;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:1001;font-size:.75rem}
+.menu-toggle:hover{background:var(--primary-dark)}
+.sidebar.collapsed .menu-toggle{transform:rotate(180deg)}
+
+.sidebar-search{padding:1rem;border-bottom:1px solid var(--border-color)}
+.search-input-wrapper{position:relative;display:flex;align-items:center}
+.search-input-wrapper i{position:absolute;left:1rem;color:var(--text-muted);font-size:.875rem}
+.search-input{width:100%;padding:.5rem 1rem .5rem 2.5rem;border:1px solid var(--border-color);border-radius:.75rem;background:var(--bg-secondary);color:var(--text-primary);font-size:.875rem}
+.search-input:focus{outline:none;border-color:var(--primary)}
+
+.sidebar-nav{flex:1;overflow-y:auto;padding:1rem}
+.nav-section{margin-bottom:1.5rem}
+.nav-section-title{font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--text-muted);padding:.5rem 1rem;margin-bottom:.25rem}
+.sidebar.collapsed .nav-section-title{display:none}
+
+.nav-menu{list-style:none}
+.nav-item{margin-bottom:2px}
+.nav-link{display:flex;align-items:center;gap:1rem;padding:.625rem 1rem;border-radius:.75rem;color:var(--text-secondary);text-decoration:none;font-size:.9rem;font-weight:500;transition:all .15s;position:relative}
+.nav-link::before{content:'';position:absolute;left:0;top:0;height:100%;width:3px;background:var(--primary);transform:scaleY(0);transition:transform .15s;border-radius:0 .25rem .25rem 0}
+.nav-link:hover{background:rgba(99,102,241,.05);color:var(--primary)}
+.nav-link.active{background:rgba(99,102,241,.1);color:var(--primary);font-weight:600}
+.nav-link.active::before{transform:scaleY(1)}
+.nav-link i{width:22px;text-align:center;font-size:1.05rem}
+.nav-link span{white-space:nowrap}
+.sidebar.collapsed .nav-link span{display:none}
+
+.nav-dropdown{position:relative}
+.nav-dropdown-toggle{justify-content:space-between}
+.nav-dropdown-toggle .dropdown-arrow{transition:transform .2s;font-size:.75rem;margin-left:auto}
+.nav-dropdown.open .nav-dropdown-toggle .dropdown-arrow{transform:rotate(180deg)}
+.nav-submenu{list-style:none;padding-left:2.75rem;max-height:0;overflow:hidden;transition:max-height .25s}
+.sidebar.collapsed .nav-submenu{display:none}
+.nav-dropdown.open .nav-submenu{max-height:500px}
+.nav-submenu .nav-link{padding:.5rem 1rem;font-size:.85rem}
+
+.sidebar-footer{padding:1rem;border-top:1px solid var(--border-color);background:var(--bg-card)}
+.user-profile{display:flex;align-items:center;gap:1rem;cursor:pointer}
+.user-profile:hover{opacity:.8}
+.user-avatar{width:40px;height:40px;background:linear-gradient(135deg,var(--primary),var(--secondary));border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-weight:600;font-size:.875rem}
+.user-info{flex:1;overflow:hidden}
+.sidebar.collapsed .user-info{display:none}
+.user-name{font-weight:600;font-size:.9rem;color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.user-role{font-size:.75rem;color:var(--text-muted);text-transform:capitalize}
+
+/* Main Content */
+.main-content{flex:1;margin-left:var(--sidebar-width);min-height:100vh;display:flex;flex-direction:column;transition:margin-left .25s}
+.sidebar.collapsed~.main-content{margin-left:var(--sidebar-collapsed)}
+@media(max-width:1024px){.main-content{margin-left:0}.sidebar.collapsed~.main-content{margin-left:0}}
+
+/* Header */
+.main-header{height:var(--header-height);background:var(--bg-card);border-bottom:1px solid var(--border-color);display:flex;align-items:center;justify-content:space-between;padding:0 1.5rem;position:sticky;top:0;z-index:100}
+.header-left{display:flex;align-items:center;gap:1rem}
+.header-title{font-size:1.35rem;font-weight:700;color:var(--text-primary)}
+.header-actions{display:flex;align-items:center;gap:.5rem}
+
+/* Page Content */
+.page-content{flex:1;padding:1.5rem;overflow-y:auto}
+@media(max-width:768px){.page-content{padding:1rem;padding-bottom:calc(var(--bottom-nav-height) + 1rem)}}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;padding:.625rem 1.25rem;border-radius:.75rem;font-size:.875rem;font-weight:600;cursor:pointer;transition:all .15s;border:none;outline:none;white-space:nowrap}
+.btn:disabled{opacity:.6;cursor:not-allowed}
+.btn-primary{background:var(--primary);color:white}
+.btn-primary:hover:not(:disabled){background:var(--primary-dark);transform:translateY(-2px)}
+.btn-success{background:var(--success);color:white}
+.btn-success:hover:not(:disabled){filter:brightness(0.9)}
+.btn-danger{background:var(--danger);color:white}
+.btn-danger:hover:not(:disabled){filter:brightness(0.9)}
+.btn-warning{background:var(--warning);color:white}
+.btn-outline{background:transparent;border:1.5px solid var(--border-color);color:var(--text-secondary)}
+.btn-outline:hover:not(:disabled){border-color:var(--primary);color:var(--primary)}
+.btn-sm{padding:.4rem .875rem;font-size:.8rem}
+.btn-block{width:100%}
+
+.btn-icon{width:40px;height:40px;padding:0;border-radius:.75rem;background:var(--bg-secondary);border:1px solid var(--border-color);color:var(--text-secondary);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s}
+.btn-icon:hover{background:rgba(99,102,241,.05);color:var(--primary);border-color:var(--primary)}
+
+/* Cards */
+.card{background:var(--bg-card);border-radius:1rem;border:1px solid var(--border-color);overflow:hidden;transition:all .25s}
+.card:hover{box-shadow:var(--shadow-lg)}
+.card-header{padding:1.25rem 1.5rem;border-bottom:1px solid var(--border-color);display:flex;align-items:center;justify-content:space-between;gap:1rem}
+.card-title{font-size:1.1rem;font-weight:700;color:var(--text-primary);display:flex;align-items:center;gap:.5rem}
+.card-body{padding:1.5rem}
+.card-footer{padding:1rem 1.5rem;border-top:1px solid var(--border-color);background:var(--bg-secondary)}
+
+/* Forms */
+.form-group{margin-bottom:1.25rem}
+.form-label{display:block;font-size:.875rem;font-weight:500;color:var(--text-secondary);margin-bottom:.5rem}
+.form-input,.form-select,.form-textarea{width:100%;padding:.75rem 1rem;border:1.5px solid var(--border-color);border-radius:.75rem;background:var(--bg-secondary);color:var(--text-primary);font-size:.95rem;transition:all .15s;font-family:inherit}
+.form-input:focus,.form-select:focus,.form-textarea:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px rgba(99,102,241,.1)}
+.form-input::placeholder{color:var(--text-muted)}
+.form-textarea{min-height:100px;resize:vertical}
+.form-select{cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 1rem center;padding-right:2.5rem}
+
+/* Tables */
+.table-container{overflow-x:auto;border-radius:1rem;border:1px solid var(--border-color)}
+.table{width:100%;border-collapse:collapse;font-size:.9rem}
+.table th,.table td{padding:.875rem 1rem;text-align:left;border-bottom:1px solid var(--border-color)}
+.table th{font-weight:600;color:var(--text-secondary);background:var(--bg-secondary);font-size:.8rem;text-transform:uppercase;letter-spacing:.05em}
+.table tbody tr:hover{background:rgba(99,102,241,.05)}
+
+/* Badges */
+.badge{display:inline-flex;align-items:center;gap:.25rem;padding:.35rem .75rem;border-radius:9999px;font-size:.75rem;font-weight:600}
+.badge-primary{background:rgba(99,102,241,.1);color:var(--primary)}
+.badge-success{background:rgba(16,185,129,.1);color:var(--success)}
+.badge-warning{background:rgba(245,158,11,.1);color:var(--warning)}
+.badge-danger{background:rgba(239,68,68,.1);color:var(--danger)}
+
+/* Toast */
+.toast-container{position:fixed;top:1rem;right:1rem;z-index:9999;display:flex;flex-direction:column;gap:.5rem;max-width:400px}
+.toast{display:flex;align-items:center;gap:1rem;padding:1rem 1.5rem;background:var(--bg-card);border-radius:.75rem;box-shadow:var(--shadow-lg);border-left:4px solid;animation:slideIn .3s ease}
+@keyframes slideIn{from{transform:translateX(100%);opacity:0}to{transform:translateX(0);opacity:1}}
+.toast.success{border-left-color:var(--success)}
+.toast.error{border-left-color:var(--danger)}
+.toast.warning{border-left-color:var(--warning)}
+.toast.info{border-left-color:var(--info)}
+
+/* Loading */
+.loading-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:var(--bg-primary);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9998;opacity:0;visibility:hidden;transition:all .25s}
+.loading-overlay.active{opacity:1;visibility:visible}
+.spinner{width:48px;height:48px;border:4px solid var(--border-color);border-top-color:var(--primary);border-radius:50%;animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* Mobile Nav */
+.mobile-nav{display:none;position:fixed;bottom:0;left:0;right:0;height:var(--bottom-nav-height);background:var(--bg-card);border-top:1px solid var(--border-color);z-index:999;padding:0 1rem}
+.mobile-nav-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.25rem;color:var(--text-muted);text-decoration:none;font-size:.7rem;font-weight:500;transition:all .15s;padding:.5rem}
+.mobile-nav-item i{font-size:1.25rem}
+.mobile-nav-item.active,.mobile-nav-item:hover{color:var(--primary)}
+@media(max-width:768px){.mobile-nav{display:flex}.page-content{padding-bottom:calc(var(--bottom-nav-height) + 1rem)}}
+
+/* Modal */
+.modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;z-index:2000;opacity:0;visibility:hidden;transition:all .25s;padding:1rem}
+.modal-overlay.active{opacity:1;visibility:visible}
+.modal-content{background:var(--bg-card);border-radius:1.5rem;width:100%;max-width:500px;max-height:90vh;overflow-y:auto;box-shadow:var(--shadow-lg);transform:scale(.9) translateY(20px);transition:all .25s}
+.modal-overlay.active .modal-content{transform:scale(1) translateY(0)}
+.modal-header{padding:1.25rem 1.5rem;border-bottom:1px solid var(--border-color);display:flex;align-items:center;justify-content:space-between}
+.modal-title{font-size:1.25rem;font-weight:700;color:var(--text-primary)}
+.modal-close{width:36px;height:36px;border:none;border-radius:.75rem;background:var(--bg-secondary);color:var(--text-muted);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s}
+.modal-close:hover{background:var(--danger);color:white}
+.modal-body{padding:1.5rem}
+.modal-footer{padding:1rem 1.5rem;border-top:1px solid var(--border-color);display:flex;gap:.75rem;justify-content:flex-end}
+
+/* Empty State */
+.empty-state{text-align:center;padding:3rem 1.5rem;color:var(--text-muted)}
+.empty-state i{font-size:3rem;margin-bottom:1rem;opacity:.5}
+.empty-state-title{font-size:1.1rem;font-weight:600;color:var(--text-primary);margin-bottom:.5rem}
+
+/* Toggle Switch */
+.toggle-switch{position:relative;width:50px;height:26px}
+.toggle-switch input{opacity:0;width:0;height:0}
+.toggle-slider{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:50px;transition:.3s}
+.toggle-slider:before{content:"";position:absolute;height:20px;width:20px;left:2px;bottom:2px;background:white;border-radius:50%;transition:.3s;box-shadow:var(--shadow-sm)}
+input:checked+.toggle-slider{background:var(--primary);border-color:var(--primary)}
+input:checked+.toggle-slider:before{transform:translateX(24px)}
+
+/* Theme Grid */
+.theme-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-top:1rem}
+.theme-option{display:flex;flex-direction:column;align-items:center;gap:.5rem;padding:1rem;border-radius:1rem;border:2px solid var(--border-color);cursor:pointer;transition:all .15s}
+.theme-option:hover{border-color:var(--text-muted);transform:translateY(-2px)}
+.theme-option.active{border-color:var(--primary);background:rgba(99,102,241,.05)}
+.theme-color{width:40px;height:40px;border-radius:50%;box-shadow:var(--shadow-md)}
+.theme-name{font-size:.75rem;font-weight:500;color:var(--text-secondary)}
+.theme-indigo{background:linear-gradient(135deg,#6366f1,#ec4899)}
+.theme-blue{background:linear-gradient(135deg,#3b82f6,#06b6d4)}
+.theme-green{background:linear-gradient(135deg,#10b981,#84cc16)}
+.theme-orange{background:linear-gradient(135deg,#f97316,#f59e0b)}
+.theme-purple{background:linear-gradient(135deg,#8b5cf6,#d946ef)}
+.theme-red{background:linear-gradient(135deg,#ef4444,#f97316)}
+.theme-pink{background:linear-gradient(135deg,#ec4899,#8b5cf6)}
+.theme-teal{background:linear-gradient(135deg,#14b8a6,#06b6d4)}
+.theme-ocean{background:linear-gradient(135deg,#0ea5e9,#06b6d4)}
+.theme-sunset{background:linear-gradient(135deg,#f97316,#c026d3)}
+.theme-midnight{background:linear-gradient(135deg,#1e293b,#334155)}
+
+/* Utilities */
+.d-none{display:none!important}
+.d-block{display:block!important}
+.d-flex{display:flex!important}
+.d-md-none{display:none!important}
+@media(max-width:768px){.d-md-none{display:none!important}.d-sm-none{display:none!important}}
+.text-left{text-align:left!important}
+.text-center{text-align:center!important}
+.text-right{text-align:right!important}
+.text-primary{color:var(--primary)!important}
+.text-success{color:var(--success)!important}
+.text-danger{color:var(--danger)!important}
+.font-bold{font-weight:700!important}
+.text-sm{font-size:.875rem!important}
+.mb-0{margin-bottom:0!important}
+.mb-2{margin-bottom:1rem!important}
+.w-full{width:100%!important}
+    /* Password Modal Styles */
+    .toggle-password {
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 0.5rem;
+      transition: all 0.2s;
+    }
+    
+    .toggle-password:hover {
+      background: var(--bg-secondary);
+      color: var(--primary);
+    }
+
+    .password-strength-weak { color: var(--danger); }
+    .password-strength-medium { color: var(--warning); }
+    .password-strength-strong { color: var(--success); }
+    
+    .password-match-error { color: var(--danger); }
+    .password-match-success { color: var(--success); }
+
+    /* Modal Animation Enhancement */
+    .modal-overlay {
+      backdrop-filter: blur(4px);
+    }
+  </style>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
+  
+  <style>
+    .settings-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+    @media (min-width: 769px) {
+      .settings-grid {
+        grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      }
+    }
+
+    .setting-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 0;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .setting-item:last-child {
+      border-bottom: none;
+    }
+
+        .setting-info {
+      flex: 1;
+      min-width: 0;
+      overflow: hidden;
+    }
+
+    .setting-label {
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 0.25rem;
+    }
+
+    .setting-desc {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+    }
+
+    .toggle-switch {
+      position: relative;
+      width: 50px;
+      height: 26px;
+    }
+
+    .toggle-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .toggle-slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 50px;
+      transition: 0.3s;
+    }
+
+    .toggle-slider:before {
+      content: "";
+      position: absolute;
+      height: 20px;
+      width: 20px;
+      left: 2px;
+      bottom: 2px;
+      background: white;
+      border-radius: 50%;
+      transition: 0.3s;
+      box-shadow: var(--shadow-sm);
+    }
+
+    input:checked + .toggle-slider {
+      background: var(--primary);
+      border-color: var(--primary);
+    }
+
+    input:checked + .toggle-slider:before {
+      transform: translateX(24px);
+    }
+
+         .theme-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+@media (max-width: 480px) {
+  .theme-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.5rem; }
+  .theme-option { padding: 0.5rem 0.25rem; min-width: 0; overflow: hidden; }
+  .theme-color { width: 32px; height: 32px; }
+  .theme-name { font-size: 0.7rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+}
+
+@media (min-width: 481px) and (max-width: 768px) {
+  .theme-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+
+@media (min-width: 769px) {
+  .theme-grid { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 1rem; }
+}
+    .theme-option {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 1rem;
+      border-radius: var(--radius-xl);
+      border: 2px solid var(--border-color);
+      cursor: pointer;
+      transition: all var(--transition-fast);
+    }
+
+    .theme-option:hover {
+      border-color: var(--text-muted);
+      transform: translateY(-2px);
+    }
+
+    .theme-option.active {
+      border-color: var(--primary);
+      background: rgba(var(--primary-rgb), 0.05);
+    }
+
+    .theme-color {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      box-shadow: var(--shadow-md);
+    }
+
+    .theme-name {
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+    }
+
+    .theme-indigo { background: linear-gradient(135deg, #6366f1, #ec4899); }
+    .theme-blue { background: linear-gradient(135deg, #3b82f6, #06b6d4); }
+    .theme-green { background: linear-gradient(135deg, #10b981, #84cc16); }
+    .theme-orange { background: linear-gradient(135deg, #f97316, #f59e0b); }
+    .theme-purple { background: linear-gradient(135deg, #8b5cf6, #d946ef); }
+    .theme-red { background: linear-gradient(135deg, #ef4444, #f97316); }
+    .theme-pink { background: linear-gradient(135deg, #ec4899, #8b5cf6); }
+    .theme-teal { background: linear-gradient(135deg, #14b8a6, #06b6d4); }
+    .theme-ocean { background: linear-gradient(135deg, #0ea5e9, #06b6d4); }
+    .theme-sunset { background: linear-gradient(135deg, #f97316, #c026d3); }
+    .theme-midnight { background: linear-gradient(135deg, #1e293b, #334155); }
+    .theme-berry { background: linear-gradient(135deg, #be185d, #f43f5e); }
+    .theme-cyan { background: linear-gradient(135deg, #0891b2, #06b6d4); }
+    .theme-amber { background: linear-gradient(135deg, #d97706, #fbbf24); }
+    .theme-rose { background: linear-gradient(135deg, #e11d48, #fb7185); }
+
+    .danger-zone {
+      border: 1px solid var(--danger);
+      border-radius: var(--radius-lg);
+      padding: 1rem;
+      margin-top: 1rem;
+    }
+
+    .danger-zone-title {
+      color: var(--danger);
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .form-group {
+      margin-bottom: 1.25rem;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      margin-bottom: 0.5rem;
+    }
+
+    .form-input,
+    .form-textarea {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 1.5px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      background: var(--bg-secondary);
+      color: var(--text-primary);
+      font-size: 1rem;
+      font-family: inherit;
+      transition: all var(--transition-fast);
+    }
+
+    .form-input:focus,
+    .form-textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px rgba(var(--primary-rgb), 0.1);
+    }
+
+    .form-textarea {
+      min-height: 80px;
+      resize: vertical;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      border-radius: var(--radius-lg);
+      font-size: 0.875rem;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      transition: all var(--transition-fast);
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-dark);
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      background: var(--secondary);
+      color: white;
+    }
+
+    .btn-secondary:hover {
+      filter: brightness(1.1);
+    }
+
+    .btn-danger {
+      background: var(--danger);
+      color: white;
+    }
+
+    .btn-danger:hover {
+      background: var(--danger-dark);
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 1.5px solid var(--border-color);
+      color: var(--text-secondary);
+    }
+
+    .btn-outline:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    .btn-block {
+      width: 100%;
+    }
+
+        /* FORCE VISIBLE */
+    .theme-ocean, .theme-sunset, .theme-midnight {
+      display: block !important;
+      visibility: visible !important;
+    }
+
+    /* ============================================
+   RESPONSIVE FLEXIBLE — PAGE PENGATURAN
+   ============================================ */
+
+/* Tablet (769px - 1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .settings-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 1rem !important;
+  }
+  .theme-grid {
+    grid-template-columns: repeat(4, 1fr) !important;
+  }
+}
+
+/* Mobile (max 768px) */
+@media (max-width: 768px) {
+  
+  :root {
+    --header-height: 52px;
+    --bottom-nav-height: 58px;
+    --sidebar-width: 260px;
+  }
+  
+  .main-header {
+    height: var(--header-height);
+    padding: 0 0.75rem;
+  }
+  
+  .header-title {
+    font-size: 1rem !important;
+    max-width: 160px;
+  }
+  
+  #mobileMenuToggle {
+    width: 34px !important;
+    height: 34px !important;
+  }
+  
+  .page-content {
+    padding: 0.75rem !important;
+    padding-bottom: calc(var(--bottom-nav-height) + 0.75rem) !important;
+  }
+  
+  .settings-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1rem !important;
+  }
+  
+  .card-header {
+    padding: 1rem 1.25rem !important;
+  }
+  
+  .card-body {
+    padding: 1.25rem !important;
+  }
+  
+  .card-title {
+    font-size: 1rem !important;
+  }
+  
+  .setting-item {
+    padding: 0.875rem 0 !important;
+    gap: 0.75rem;
+  }
+  
+  .setting-label {
+    font-size: 0.85rem !important;
+  }
+  
+  .setting-desc {
+    font-size: 0.8rem !important;
+  }
+  
+    .theme-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 0.5rem !important;
+  }
+  
+  .theme-option {
+    padding: 0.75rem 0.5rem !important;
+  }
+  
+  .theme-color {
+    width: 36px !important;
+    height: 36px !important;
+  }
+  
+  .theme-name {
+    font-size: 0.7rem !important;
+  }
+  
+  .form-input, .form-textarea {
+    padding: 0.625rem 0.875rem !important;
+    font-size: 0.9rem !important;
+  }
+  
+  .btn {
+    padding: 0.625rem 1.25rem !important;
+    font-size: 0.8rem !important;
+  }
+  
+  .btn-block {
+    width: 100% !important;
+  }
+  
+  .danger-zone {
+    padding: 0.875rem !important;
+  }
+  
+  .danger-zone-title {
+    font-size: 0.9rem !important;
+  }
+  
+  /* Modal full width di mobile */
+  .modal-content {
+    max-width: 100% !important;
+    margin: 0.5rem !important;
+    border-radius: 1.25rem !important;
+  }
+  
+  .mobile-nav {
+    height: 58px !important;
+  }
+  
+  .mobile-nav-item {
+    font-size: 0.6rem !important;
+    gap: 0.15rem !important;
+  }
+  
+  .mobile-nav-item i {
+    font-size: 1.15rem !important;
+  }
+}
+
+/* Small phone (max 380px) */
+@media (max-width: 380px) {
+  
+  .header-title {
+    font-size: 0.9rem !important;
+    max-width: 120px;
+  }
+  
+    .theme-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 0.35rem !important;
+  }
+  
+  .theme-color {
+    width: 32px !important;
+    height: 32px !important;
+  }
+  
+  .settings-grid {
+    gap: 0.75rem !important;
+  }
+  
+  .card-body {
+    padding: 1rem !important;
+  }
+  
+  .setting-item {
+    flex-direction: column;
+    align-items: flex-start !important;
+    gap: 0.5rem;
+  }
+  
+  .toggle-switch {
+    align-self: flex-end;
+  }
+}
+
+/* ===== SETTINGS TABS ===== */
+.settings-tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+  scrollbar-width: none;
+  max-width: 100%;
+  min-width: 0;
+}
+    
+.settings-tabs::-webkit-scrollbar { display: none; }
+
+.tab-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1.25rem;
+  border-radius: 0.75rem;
+  border: 1.5px solid var(--border-color);
+  background: var(--bg-card);
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s;
+  flex-shrink: 0;
+}
+.tab-btn:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+.tab-btn.active {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+  box-shadow: 0 4px 12px rgba(99,102,241,0.25);
+}
+
+/* Tab Panels */
+.tab-panel { display: none; }
+.tab-panel.active { display: block; animation: fadeIn 0.2s ease; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+/* Bluetooth Device Item */
+.bt-device-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.875rem 1rem;
+  background: var(--bg-secondary);
+  border: 1.5px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.bt-device-item:hover {
+  border-color: var(--primary);
+  background: rgba(99,102,241,0.05);
+}
+.bt-device-item.connected {
+  border-color: var(--success);
+  background: rgba(16,185,129,0.08);
+}
+.bt-device-info { display: flex; flex-direction: column; gap: 0.15rem; }
+.bt-device-name { font-weight: 600; font-size: 0.9rem; color: var(--text-primary); }
+.bt-device-mac { font-size: 0.75rem; color: var(--text-muted); }
+
+/* ===== DARK MODE FIX - PAGE SETTING ===== */
+[data-theme="dark"] .settings-tabs { /* inherit */ }
+[data-theme="dark"] .tab-btn {
+  background: #1e293b;
+  border-color: #334155;
+  color: #cbd5e1;
+}
+[data-theme="dark"] .tab-btn.active {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+}
+[data-theme="dark"] .bt-device-item {
+  background: #1e293b;
+  border-color: #334155;
+}
+[data-theme="dark"] .bt-device-item:hover {
+  background: rgba(99,102,241,0.15);
+}
+[data-theme="dark"] .bt-device-name { color: #f8fafc; }
+[data-theme="dark"] #printerStatusBox { background: #1e293b !important; }
+[data-theme="dark"] .danger-zone {
+  background: rgba(239,68,68,0.05);
+}
+
+/* Mobile tabs */
+@media(max-width:768px){
+  .settings-tabs { gap: 0.4rem; margin-bottom: 1rem; }
+  .tab-btn { padding: 0.5rem 0.875rem; font-size: 0.8rem; border-radius: 0.625rem; }
+  .tab-btn i { font-size: 0.9rem; }
+  .settings-grid { gap: 1rem !important; }
+}
+
+/* ============================================
+   TAB SCROLL HINT + RESPONSIVE ALL DEVICES
+   ============================================ */
+
+/* Wrapper tab dengan indikator bisa geser */
+.settings-tabs-wrapper {
+  position: relative;
+  margin-bottom: 1.5rem;
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.settings-tabs-wrapper::-webkit-scrollbar {
+  display: none;
+}
+    
+
+/* ===== RESPONSIVE TAB ===== */
+@media (max-width: 768px) {
+  .settings-tabs-wrapper { margin-bottom: 1rem; }
+  .settings-tabs-wrapper::after { width: 30px; }
+  
+  .tab-btn {
+    padding: 0.5rem 0.875rem !important;
+    font-size: 0.8rem !important;
+    border-radius: 0.625rem !important;
+    gap: 0.35rem !important;
+  }
+  .tab-btn i { font-size: 0.85rem !important; }
+}
+
+/* Phone kecil (<=480px) */
+@media (max-width: 480px) {
+  .tab-btn {
+    padding: 0.45rem 0.75rem !important;
+    font-size: 0.75rem !important;
+    border-radius: 0.5rem !important;
+  }
+  .tab-btn i { font-size: 0.8rem !important; }
+  .settings-tabs { gap: 0.35rem !important; }
+}
+
+/* Phone sangat kecil (<=380px) */
+@media (max-width: 380px) {
+  .tab-btn {
+    padding: 0.4rem 0.625rem !important;
+    font-size: 0.7rem !important;
+  }
+  .tab-btn i { font-size: 0.75rem !important; }
+}
+
+/* ===== KONTEN PER TAB - FLEXIBLE ALL DEVICES ===== */
+.tab-contents {
+  width: 100%;
+}
+
+/* Desktop & Tablet: grid normal */
+@media (min-width: 769px) {
+  #tab-tampilan .settings-grid {
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)) !important;
+    max-width: none !important;
+  }
+}
+
+/* Mobile: full width, tidak overflow */
+@media (max-width: 768px) {
+  .tab-panel > .settings-grid {
+    grid-template-columns: 1fr !important;
+    max-width: 100% !important;
+    gap: 1rem !important;
+  }
+  
+  .tab-panel .card {
+    border-radius: 0.875rem !important;
+  }
+  
+  .tab-panel .card-header {
+    padding: 1rem 1.25rem !important;
+  }
+  
+  .tab-panel .card-body {
+    padding: 1.25rem !important;
+  }
+  
+  /* Form di mobile lebih besar touch target */
+  .tab-panel .form-input,
+  .tab-panel .form-textarea {
+    padding: 0.75rem 1rem !important;
+    font-size: 1rem !important; /* Mencegah zoom iOS */
+    min-height: 44px;
+  }
+  
+  /* Bluetooth device item lebih tinggi di mobile */
+  .bt-device-item {
+    padding: 1rem !important;
+  }
+  .bt-device-name {
+    font-size: 0.95rem !important;
+  }
+  
+  /* Printer status box */
+  #printerStatusBox {
+    padding: 1.25rem 1rem !important;
+  }
+}
+
+/* Small phone */
+@media (max-width: 480px) {
+  .tab-panel .card-body {
+    padding: 1rem !important;
+  }
+  
+  .tab-panel .card-header {
+    padding: 0.875rem 1rem !important;
+  }
+  
+  .tab-panel .card-title {
+    font-size: 0.95rem !important;
+  }
+  
+  .setting-item {
+    padding: 0.75rem 0 !important;
+  }
+  
+  .setting-label {
+    font-size: 0.85rem !important;
+  }
+  
+  /* Theme grid di tab tampilan */
+  #tab-tampilan .theme-grid {
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 0.75rem !important;
+  }
+  
+  .theme-option {
+    padding: 0.75rem 0.5rem !important;
+  }
+  
+  .theme-color {
+    width: 36px !important;
+    height: 36px !important;
+  }
+  
+  .theme-name {
+    font-size: 0.7rem !important;
+  }
+}
+
+/* Very small phone */
+@media (max-width: 380px) {
+  .tab-panel .card-body {
+    padding: 0.875rem !important;
+  }
+  
+  #tab-tampilan .theme-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 0.5rem !important;
+  }
+  
+  .theme-color {
+    width: 32px !important;
+    height: 32px !important;
+  }
+  
+  .bt-device-item {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 0.5rem !important;
+  }
+  
+  .bt-device-item button {
+    align-self: stretch !important;
+    width: 100% !important;
+  }
+}
+
+    /* ============================================
+   FINAL FIX: THEME GRID ANTI OVERFLOW
+   ============================================ */
+
+/* 1. Grid tema: minmax(0,1fr) = kolom BOLEH shrink sampai 0 */
+#tab-tampilan .theme-grid,
+.tab-panel .theme-grid,
+.theme-grid {
+  display: grid !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  box-sizing: border-box !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  gap: 0.5rem !important;
+}
+
+/* 2. Item theme: overflow hidden agar teks tidak memaksa lebar */
+#tab-tampilan .theme-option,
+.tab-panel .theme-option,
+.theme-option {
+  min-width: 0 !important;
+  max-width: 100% !important;
+  overflow: hidden !important;
+  box-sizing: border-box !important;
+  padding: 0.5rem 0.25rem !important;
+}
+
+/* 3. Nama tema: ellipsis, tidak memaksa lebar parent */
+#tab-tampilan .theme-name,
+.tab-panel .theme-name,
+.theme-name {
+  font-size: 0.7rem !important;
+  font-weight: 600 !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  min-width: 0 !important;
+  width: 100% !important;
+  text-align: center !important;
+  display: block !important;
+}
+
+/* 4. Card body: pastikan tidak overflow */
+#tab-tampilan .card-body,
+.tab-panel .card-body {
+  overflow-x: hidden !important;
+  box-sizing: border-box !important;
+}
+
+/* 5. Per device */
+@media (min-width: 481px) {
+  .theme-grid { grid-template-columns: repeat(4, minmax(0, 1fr)) !important; }
+}
+@media (min-width: 769px) {
+  .theme-grid { grid-template-columns: repeat(5, minmax(0, 1fr)) !important; gap: 0.75rem !important; }
+  .theme-option { padding: 0.75rem 0.5rem !important; }
+}
+@media (max-width: 380px) {
+  .theme-grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 0.35rem !important; }
+  .theme-option { padding: 0.4rem 0.2rem !important; }
+  .theme-color { width: 32px !important; height: 32px !important; }
+  .theme-name { font-size: 0.65rem !important; }
+}
+
+/* ===== SAFETY ANTI OVERFLOW ===== */
+.card, .card-body, .tab-panel, .tab-contents {
+  max-width: 100% !important;
+  min-width: 0 !important;
+  box-sizing: border-box !important;
+}
+.card-body {
+  overflow-x: hidden !important;
+  padding: 1.25rem 1rem !important;
+}
+.form-input, .form-textarea, .btn-block {
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+    /* ===== SAFETY ANTI OVERFLOW ===== */
+@media (max-width: 768px) {
+  .page-content { padding: 0.5rem !important; }
+  .card-body { padding: 1rem 0.75rem !important; overflow-x: hidden !important; }
+  .tab-btn { padding: 0.4rem 0.6rem !important; font-size: 0.75rem !important; }
+  .form-input, .form-textarea, .btn-block { max-width: 100% !important; box-sizing: border-box !important; }
+  .setting-item { gap: 0.5rem !important; }
+}
+
+    /* ===== ROOT CAUSE FIX ===== */
+
+/* 1. Flex item TIDAK BOLEH melebar mengikuti konten */
+.main-content { min-width: 0 !important; }
+
+/* 2. Halaman tidak boleh geser horizontal */
+html, body { overflow-x: hidden !important; }
+
+/* 3. Tab wrapper = scroll container terisolasi */
+.settings-tabs-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.settings-tabs-wrapper::-webkit-scrollbar { display: none; }
+
+/* 4. Tab list lebar sesuai isi tombol */
+.settings-tabs {
+  display: flex;
+  gap: 0.5rem;
+  width: max-content;
+  padding: 0.25rem 0;
+}
+    
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <div class="logo-container">
+          <div class="logo-icon"><i class="fas fa-cash-register"></i></div>
+          <span class="logo-text">WebPOS</span>
+        </div>
+      </div>
+      <button class="menu-toggle" id="menuToggle"><i class="fas fa-chevron-left"></i></button>
+      <div class="sidebar-search">
+        <div class="search-input-wrapper">
+          <i class="fas fa-search"></i>
+          <input type="text" class="search-input" placeholder="Cari menu...">
+        </div>
+      </div>
+            <nav class="sidebar-nav">
+        <!-- Utama -->
+        <div class="nav-section">
+          <div class="nav-section-title">Utama</div>
+          <ul class="nav-menu">
+            <li class="nav-item">
+              <a href="index.html" class="nav-link" data-menu="dashboard">
+                <i class="fas fa-home"></i>
+                <span>Dashboard</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="page-kasir.html" class="nav-link" data-menu="kasir">
+                <i class="fas fa-cash-register"></i>
+                <span>Kasir</span>
+              </a>
+            </li>
+            <li class="nav-item">
+  <a href="page-produk.html" class="nav-link" data-menu="produk">
+    <i class="fas fa-box"></i>
+    <span>Produk</span>
+  </a>
+</li>
+          </ul>
+        </div>
+
+        <!-- Transaksi -->
+        <div class="nav-section">
+          <div class="nav-section-title">Transaksi</div>
+          <ul class="nav-menu">
+            <li class="nav-item">
+              <a href="page-riwayat.html" class="nav-link" data-menu="riwayat">
+                <i class="fas fa-history"></i>
+                <span>Riwayat Transaksi</span>
+              </a>
+            </li>
+            <li class="nav-item nav-dropdown" data-dropdown>
+              <div class="nav-link nav-dropdown-toggle" data-menu="kas">
+                <div style="display: flex; align-items: center; gap: 0.75rem;">
+                  <i class="fas fa-wallet"></i>
+                  <span>Kas Management</span>
+                </div>
+                <i class="fas fa-chevron-down dropdown-arrow"></i>
+              </div>
+              <ul class="nav-submenu">
+                <li><a href="page-kas.html" class="nav-link"><span>Ringkasan Kas</span></a></li>
+                <li><a href="page-modal-harian.html" class="nav-link"><span>Modal Harian</span></a></li>
+                <li><a href="page-kas-masuk.html" class="nav-link"><span>Kas Masuk</span></a></li>
+                <li><a href="page-kas-keluar.html" class="nav-link"><span>Kas Keluar</span></a></li>
+                <li><a href="page-kas-shift.html" class="nav-link"><span>Kas & Shift</span></a></li>
+                <li><a href="page-closing.html" class="nav-link"><span>Closing Shift</span></a></li>
+                <li><a href="page-kas-topup.html" class="nav-link"><span>Top Up</span></a></li>
+                <li><a href="page-kas-tarik.html" class="nav-link"><span>Tarik Tunai</span></a></li>
+              </ul>
+            </li>
+            <li class="nav-item">
+  <a href="page-pembelian.html" class="nav-link" data-menu="pembelian">
+    <i class="fas fa-shopping-cart"></i>
+    <span>Pembelian / Restock</span>
+  </a>
+</li>
+            <li class="nav-item">
+              <a href="page-hutang.html" class="nav-link" data-menu="hutang">
+                <i class="fas fa-hand-holding-usd"></i>
+                <span>Hutang & Piutang</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Laporan -->
+        <div class="nav-section">
+    <div class="nav-section-title">Laporan</div>
+    <ul class="nav-menu">
+      <li class="nav-item">
+        <a href="page-laporan.html" class="nav-link" data-menu="laporan">
+          <i class="fas fa-chart-bar"></i>
+          <span>Laporan Penjualan</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="page-laporan-stok.html" class="nav-link" data-menu="laporan-stok">
+          <i class="fas fa-boxes"></i>
+          <span>Laporan Stok</span>
+        </a>
+      </li>
+      <!-- BARANG TERLARIS - Menu Standalone (BUKAN SUBMENU) -->
+      <li class="nav-item">
+        <a href="page-laporan-terlaris.html" class="nav-link" data-menu="laporan-terlaris">
+          <i class="fas fa-crown"></i>
+          <span>Barang Terlaris</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+
+
+        <!-- Integrasi -->
+        <div class="nav-section">
+          <div class="nav-section-title">Integrasi</div>
+          <ul class="nav-menu">
+            <li class="nav-item">
+              <a href="page-saldo-telegram.html" class="nav-link" data-menu="telegram">
+                <i class="fab fa-telegram"></i>
+                <span>Saldo Telegram</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="page-data-pelanggan.html" class="nav-link" data-menu="pelanggan">
+                <i class="fas fa-users"></i>
+                <span>Data Pelanggan</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Sistem -->
+        <div class="nav-section">
+          <div class="nav-section-title">Sistem</div>
+          <ul class="nav-menu">
+            <li class="nav-item">
+              <a href="page-pengguna.html" class="nav-link" data-menu="pengguna">
+                <i class="fas fa-user-cog"></i>
+                <span>Pengguna</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="page-setting.html" class="nav-link active" data-menu="setting">
+                <i class="fas fa-cog"></i>
+                <span>Pengaturan</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="page-backup.html" class="nav-link" data-menu="backup">
+                <i class="fas fa-cloud-upload-alt"></i>
+                <span>Backup & Sync</span>
+              </a>
+            </li>
+            <li class="nav-item">
+        <a href="page-log-aktivitas.html" class="nav-link" data-menu="log-aktivitas">
+          <i class="fas fa-history"></i>
+          <span>Log Aktivitas</span>
+        </a>
+      </li>
+            <li class="nav-item">
+              <a href="page-printer.html" class="nav-link" data-menu="printer">
+                <i class="fas fa-print"></i>
+                <span>Printer & Struk</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a href="page-reset.html" class="nav-link" data-menu="reset">
+                <i class="fas fa-trash-alt"></i>
+                <span>Reset Data</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="user-profile" id="userProfile">
+          <div class="user-avatar" id="userAvatar"><i class="fas fa-user"></i></div>
+          <div class="user-info">
+            <div class="user-name" id="userName">Loading...</div>
+            <div class="user-role" id="userRole">-</div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="main-header">
+        <div class="header-left">
+         <button class="btn-icon" id="mobileMenuToggle">
+  <i class="fas fa-bars"></i>
+</button>
+          <h1 class="header-title">Pengaturan</h1>
+        </div>
+        <div class="header-actions">
+          <button class="btn-icon" id="btnTheme" title="Toggle Dark Mode">
+            <i class="fas fa-moon"></i>
+          </button>
+          <button class="btn-icon" id="btnLogout"><i class="fas fa-sign-out-alt"></i></button>
+        </div>
+      </header>
+
+      <div class="page-content">
+  <!-- Tab Navigation -->
+  <div class="settings-tabs-wrapper">
+    <div class="settings-tabs">
+    <button class="tab-btn active" data-tab="tab-tampilan"><i class="fas fa-palette"></i> Tampilan</button>
+    <button class="tab-btn" data-tab="tab-toko"><i class="fas fa-store"></i> Toko</button>
+    <button class="tab-btn" data-tab="tab-akun"><i class="fas fa-user-circle"></i> Akun</button>
+    <button class="tab-btn" data-tab="tab-printer"><i class="fas fa-print"></i> Printer</button>
+    <button class="tab-btn" data-tab="tab-notifikasi"><i class="fas fa-bell"></i> Notifikasi</button>
+    <button class="tab-btn" data-tab="tab-lanjutan"><i class="fas fa-cog"></i> Lanjutan</button>
+  </div>
+  </div>
+
+  <div class="tab-contents">
+    <!-- TAB 1: TAMPILAN -->
+    <div class="tab-panel active" id="tab-tampilan">
+      <div class="settings-grid">
+        <div class="card">
+          <div class="card-header"><h3 class="card-title"><i class="fas fa-palette"></i> Tampilan</h3></div>
+          <div class="card-body">
+            <div class="setting-item">
+              <div class="setting-info">
+                <div class="setting-label">Mode Gelap</div>
+                <div class="setting-desc">Aktifkan tema gelap</div>
+              </div>
+              <label class="toggle-switch">
+                <input type="checkbox" id="darkModeToggle">
+                <span class="toggle-slider"></span>
+              </label>
+            </div>
+            <div style="margin-top:1.5rem;">
+              <div class="setting-label">Warna Tema</div>
+              <div class="theme-grid" id="themeGrid"></div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><h3 class="card-title"><i class="fas fa-th-list"></i> Menu Sidebar</h3></div>
+          <div class="card-body">
+            <p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:1rem">Centang menu yang ingin ditampilkan.</p>
+            <div id="menuConfigList"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 2: TOKO -->
+    <div class="tab-panel" id="tab-toko">
+    <div class="settings-grid">
+        <div class="card">
+          <div class="card-header"><h3 class="card-title"><i class="fas fa-store"></i> Pengaturan Toko</h3></div>
+          <div class="card-body">
+            <div class="form-group"><label class="form-label">Nama Toko</label><input type="text" class="form-input" id="storeName" placeholder="Nama Toko"></div>
+            <div class="form-group"><label class="form-label">Alamat</label><textarea class="form-textarea" id="storeAddress" rows="2" placeholder="Alamat Toko"></textarea></div>
+            <div class="form-group"><label class="form-label">Telepon</label><input type="tel" class="form-input" id="storePhone" placeholder="Nomor Telepon"></div>
+            <div class="form-group"><label class="form-label">Catatan Footer Struk</label><textarea class="form-textarea" id="receiptFooterNote" rows="2" placeholder="Terima kasih telah berbelanja..."></textarea></div>
+            <button class="btn btn-primary btn-block" id="btnSaveStore"><i class="fas fa-save"></i> Simpan Perubahan</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 3: AKUN -->
+    <div class="tab-panel" id="tab-akun">
+    <div class="settings-grid">
+        <div class="card">
+          <div class="card-header"><h3 class="card-title"><i class="fas fa-user-circle"></i> Profil Akun</h3></div>
+          <div class="card-body">
+            <div class="form-group"><label class="form-label">Nama Lengkap</label><input type="text" class="form-input" id="userFullName" placeholder="Nama Lengkap"></div>
+            <div class="form-group"><label class="form-label">Username</label><input type="text" class="form-input" id="userUsername" disabled></div>
+            <div class="form-group"><label class="form-label">Email</label><input type="email" class="form-input" id="userEmail" disabled></div>
+            <button class="btn btn-primary btn-block" id="btnSaveProfile" style="margin-bottom:0.75rem;"><i class="fas fa-save"></i> Simpan Nama</button>
+            <button class="btn btn-secondary btn-block" id="btnChangePassword"><i class="fas fa-key"></i> Ganti Password</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 4: PRINTER (BARU) -->
+    <div class="tab-panel" id="tab-printer">
+    <div class="settings-grid">
+        <div class="card">
+          <div class="card-header"><h3 class="card-title"><i class="fas fa-print"></i> Printer Bluetooth</h3></div>
+          <div class="card-body">
+            <div id="printerStatusBox" style="padding:1rem;background:var(--bg-secondary);border-radius:var(--radius-lg);margin-bottom:1rem;text-align:center;">
+              <i class="fas fa-print" style="font-size:2rem;color:var(--text-muted);margin-bottom:0.5rem;"></i>
+              <div style="font-weight:600;color:var(--text-primary);" id="printerStatusText">Tidak terhubung</div>
+              <div style="font-size:0.8rem;color:var(--text-muted);margin-top:0.25rem;" id="printerMacText">-</div>
+            </div>
+
+            <button class="btn btn-primary btn-block" id="btnScanBluetooth" style="margin-bottom:1rem;">
+              <i class="fas fa-search"></i> Scan Perangkat Bluetooth
+            </button>
+
+            <div id="bluetoothDeviceList" style="display:none;">
+              <div style="font-weight:600;margin-bottom:0.75rem;color:var(--text-secondary);">Perangkat Ditemukan:</div>
+              <div id="btDevicesContainer" style="display:flex;flex-direction:column;gap:0.5rem;"></div>
+            </div>
+
+            <div style="margin-top:1.5rem;padding-top:1rem;border-top:1px solid var(--border-color);">
+              <button class="btn btn-outline btn-block" id="btnTestPrint" disabled>
+                <i class="fas fa-file-alt"></i> Test Print
+              </button>
+              <button class="btn btn-danger btn-block" id="btnDisconnectPrinter" style="margin-top:0.5rem;" disabled>
+                <i class="fas fa-unlink"></i> Putuskan Koneksi
+              </button>
+            </div>
+
+            <div style="margin-top:1rem;padding:0.75rem;background:rgba(245,158,11,0.1);border:1px solid var(--warning);border-radius:var(--radius-lg);font-size:0.8rem;color:var(--warning);">
+              <i class="fas fa-info-circle"></i> Fitur Bluetooth hanya berfungsi di APK Android. Di browser, gunakan tombol Test untuk simulasi.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 5: NOTIFIKASI -->
+    <div class="tab-panel" id="tab-notifikasi">
+    <div class="settings-grid">
+        <div class="card">
+          <div class="card-header"><h3 class="card-title"><i class="fas fa-bell"></i> Notifikasi</h3></div>
+          <div class="card-body">
+            <div class="setting-item">
+              <div class="setting-info"><div class="setting-label">Notifikasi Stok Rendah</div><div class="setting-desc">Dapatkan notifikasi saat stok menipis</div></div>
+              <label class="toggle-switch"><input type="checkbox" id="stockNotif" checked><span class="toggle-slider"></span></label>
+            </div>
+            <div class="setting-item">
+              <div class="setting-info"><div class="setting-label">Suara Transaksi</div><div class="setting-desc">Putar suara saat transaksi berhasil</div></div>
+              <label class="toggle-switch"><input type="checkbox" id="soundToggle" checked><span class="toggle-slider"></span></label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 6: LANJUTAN -->
+    <div class="tab-panel" id="tab-lanjutan">
+    <div class="settings-grid">
+        <div class="card">
+          <div class="card-header"><h3 class="card-title"><i class="fas fa-user-tie"></i> Menu & Akses</h3></div>
+          <div class="card-body">
+            <div class="setting-item">
+              <div class="setting-info"><div class="setting-label">Menu Keuangan Owner</div><div class="setting-desc">Menu laporan keuangan pribadi owner</div></div>
+              <label class="toggle-switch"><input type="checkbox" id="settingOwnerFinance"><span class="toggle-slider"></span></label>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-body">
+            <div class="danger-zone">
+              <div class="danger-zone-title"><i class="fas fa-exclamation-triangle"></i> Zona Berbahaya</div>
+              <p style="font-size:0.875rem;color:var(--text-muted);margin-bottom:1rem;">Tindakan berikut tidak dapat dibatalkan.</p>
+              <button class="btn btn-danger" id="btnClearData"><i class="fas fa-trash"></i> Hapus Semua Data</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    </main>
+
+    <nav class="mobile-nav">
+      <a href="index.html" class="mobile-nav-item"><i class="fas fa-home"></i><span>Dashboard</span></a>
+      <a href="page-kasir.html" class="mobile-nav-item"><i class="fas fa-cash-register"></i><span>Kasir</span></a>
+      <a href="page-produk.html" class="mobile-nav-item"><i class="fas fa-box"></i><span>Produk</span></a>
+      <a href="page-riwayat.html" class="mobile-nav-item"><i class="fas fa-history"></i><span>Riwayat</span></a>
+      <a href="page-setting.html" class="mobile-nav-item active"><i class="fas fa-cog"></i><span>Setting</span></a>
+    </nav>
+  </div>
+
+  <div class="loading-overlay" id="loadingOverlay">
+    <div class="spinner"></div>
+    <p style="margin-top: 1rem; color: var(--text-secondary);">Loading...</p>
+  </div>
+
+       <!-- Scripts -->
+  <script src="js/firebase-config.js?v=2"></script>
+  <script src="js/utils.js?v=3"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/sidebar-filter.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      auth.onAuthStateChanged((user) => {
+        if (!user && !Utils.getStorage('webpos_session')) {
+          window.location.href = 'login.html';
+          return;
+        }
+        
+        if (user) {
+          Auth.loadUserData(user.uid).then(() => {
+            initSettings();
+          });
+        }
+      });
+
+      function initSettings() {
+        const currentUser = Auth.getCurrentUser();
+
+        // Fungsi update logo toko
+        function updateLogoToko(namaToko) {
+          const logoText = document.querySelector('.logo-text');
+          if (logoText && namaToko) {
+            logoText.textContent = namaToko;
+          }
+          localStorage.setItem('webpos_store_name', namaToko);
+        }
+        
+        // Update user info
+        document.getElementById('userName').textContent = currentUser?.name || currentUser?.username || 'User';
+        document.getElementById('userRole').textContent = currentUser?.role ? 
+          currentUser.role.charAt(0).toUpperCase() + currentUser.role.slice(1) : 'Kasir';
+        document.getElementById('userFullName').value = currentUser?.name || '';
+        document.getElementById('userUsername').value = currentUser?.username || '';
+        document.getElementById('userEmail').value = currentUser?.email || '';
+
+        // Generate theme grid
+        const themeGrid = document.getElementById('themeGrid');
+        const currentTheme = Utils.Theme.getColor();
+        
+                      // Template Tema Lengkap (bukan sekadar warna accent)
+                const allThemes = [
+          {id:'indigo',name:'Indigo (Default)',class:'theme-indigo'},
+          {id:'mint',name:'Mint Fresh',class:'theme-green'},
+          {id:'ocean',name:'Ocean',class:'theme-ocean'},
+          {id:'sunset',name:'Sunset',class:'theme-sunset'},
+          {id:'midnight',name:'Midnight',class:'theme-midnight'},
+          {id:'berry',name:'Berry',class:'theme-berry'},
+          {id:'cyan',name:'Cyan',class:'theme-cyan'},
+          {id:'amber',name:'Amber',class:'theme-amber'},
+          {id:'rose',name:'Rose',class:'theme-rose'}
+        ];
+        
+        const currentTemplate = localStorage.getItem('webpos_theme_template') || 'indigo';
+
+  console.log('Theme grid found:', themeGrid);
+        console.log('Current theme:', currentTheme);
+        console.log('Total themes:', allThemes.length);
+        console.log('Theme IDs:', allThemes.map(t => t.id));
+        
+themeGrid.innerHTML = allThemes.map(theme => `
+  <div class="theme-option ${theme.id === currentTemplate ? 'active' : ''}" data-theme="${theme.id}">
+    <div class="theme-color ${theme.class}"></div>
+    <span class="theme-name">${theme.name}</span>
+  </div>
+`).join('');
+        
+               // Template click handlers
+        themeGrid.querySelectorAll('.theme-option').forEach(option => {
+          option.addEventListener('click', () => {
+            themeGrid.querySelectorAll('.theme-option').forEach(o => o.classList.remove('active'));
+            option.classList.add('active');
+            const tpl = option.dataset.theme;
+            localStorage.setItem('webpos_theme_template', tpl);
+            localStorage.setItem('webpos_theme_broadcast', Date.now().toString());
+            Utils.Theme.loadTemplate(); // Apply langsung di page ini
+            Utils.showToast(`Tema ${option.querySelector('.theme-name').textContent} diterapkan`, 'success');
+          });
+        });
+        
+        // Apply template saat load setting page
+        Utils.Theme.loadTemplate();
+
+        // Sidebar toggle - Desktop (collapse/expand)
+        document.getElementById('menuToggle').addEventListener('click', () => {
+          document.getElementById('sidebar').classList.toggle('collapsed');
+        });
+
+        // Sidebar toggle - Mobile (burger menu)
+        const mobileToggle = document.getElementById('mobileMenuToggle');
+        const sidebar = document.getElementById('sidebar');
+
+        if (mobileToggle) {
+          mobileToggle.removeAttribute('style');
+          mobileToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            sidebar.classList.toggle('mobile-open');
+          });
+        }
+
+                // Tutup sidebar saat klik link di mobile (KECUALI dropdown toggle & submenu)
+        document.querySelectorAll('.nav-link').forEach(link => {
+          link.addEventListener('click', () => {
+            if (window.innerWidth <= 1024) {
+              if (link.classList.contains('nav-dropdown-toggle')) return;
+              if (link.closest('.nav-submenu')) return;
+              sidebar.classList.remove('mobile-open');
+            }
+          });
+        });
+
+                // Tutup sidebar saat klik overlay (area gelap di luar sidebar)
+        document.addEventListener('click', (e) => {
+          if (window.innerWidth <= 1024 && 
+              sidebar.classList.contains('mobile-open') &&
+              !sidebar.contains(e.target) && 
+              !mobileToggle.contains(e.target)) {
+            sidebar.classList.remove('mobile-open');
+          }
+        });
+        
+        // Logout
+        document.getElementById('btnLogout').addEventListener('click', () => {
+          Utils.confirm('Yakin ingin logout?', () => Auth.logout());
+        });
+
+
+        // Load store settings
+        loadStoreSettings();
+
+                // Load system settings (owner menu toggle)
+        loadSystemSettings();
+
+        async function loadSystemSettings() {
+          try {
+            const snapshot = await database.ref('settings/system').once('value');
+            const sys = snapshot.val() || {};
+            document.getElementById('settingOwnerFinance').checked = sys.ownerFinanceMenu !== false;
+          } catch(e) {
+            // Fallback localStorage kalau Firebase error
+            const saved = Utils.getStorage('setting_ownerFinanceMenu');
+            document.getElementById('settingOwnerFinance').checked = saved !== 'false';
+          }
+        }
+
+        // Event listener toggle owner finance menu
+        document.getElementById('settingOwnerFinance').addEventListener('change', async (e) => {
+          const val = e.target.checked;
+          Utils.setStorage('setting_ownerFinanceMenu', val ? 'true' : 'false');
+          try {
+            await database.ref('settings/system/ownerFinanceMenu').set(val);
+          } catch(err) { console.error(err); }
+          Utils.showToast(val ? 'Menu Keuangan Owner diaktifkan' : 'Menu Keuangan Owner dinonaktifkan', 'success');
+        });
+
+                async function loadStoreSettings() {
+          try {
+            const snapshot = await database.ref('settings/store').once('value');
+            const settings = snapshot.val();
+            
+            if (settings) {
+              document.getElementById('storeName').value = settings.name || '';
+              document.getElementById('storeAddress').value = settings.address || '';
+              document.getElementById('storePhone').value = settings.phone || '';
+              
+              // ⭐ Load footer note dari receiptHeader
+              try {
+                const hdrSnap = await database.ref('settings/receiptHeader').once('value');
+                const hdr = hdrSnap.val() || {};
+                if (hdr.note) document.getElementById('receiptFooterNote').value = hdr.note;
+              } catch(e) {}
+              
+              // Update logo saat load
+              updateLogoToko(settings.name);
+              
+              // Simpan ke localStorage untuk page lain
+              localStorage.setItem('webpos_store_name', settings.name || 'WebPOS');
+              localStorage.setItem('webpos_store_address', settings.address || '');
+              localStorage.setItem('webpos_store_phone', settings.phone || '');
+            }
+          } catch (error) {
+            console.error('Error loading settings:', error);
+            // Fallback dari localStorage
+            const savedName = localStorage.getItem('webpos_store_name');
+            const savedAddr = localStorage.getItem('webpos_store_address');
+            const savedPhone = localStorage.getItem('webpos_store_phone');
+            if (savedName) document.getElementById('storeName').value = savedName;
+            if (savedAddr) document.getElementById('storeAddress').value = savedAddr;
+            if (savedPhone) document.getElementById('storePhone').value = savedPhone;
+            
+            // ⭐ Fallback footer note
+            try {
+              const savedHdr = JSON.parse(localStorage.getItem('receiptHeader') || '{}');
+              if (savedHdr.note) document.getElementById('receiptFooterNote').value = savedHdr.note;
+            } catch(e) {}
+          }
+        }  // ⭐ TAMBAH } DI SINI — tutup loadStoreSettings
+
+        // ⭐ PINDAH KE LUAR loadStoreSettings, tapi masih dalam initSettings
+        document.getElementById('btnSaveStore').addEventListener('click', async () => {
+          Utils.showLoading();
+          
+          try {
+            const storeName = document.getElementById('storeName').value;
+            const storeAddress = document.getElementById('storeAddress').value;
+            const storePhone = document.getElementById('storePhone').value;
+            const footerNote = document.getElementById('receiptFooterNote').value.trim();
+            
+            await database.ref('settings/store').set({
+              name: storeName,
+              address: storeAddress,
+              phone: storePhone,
+              updatedAt: Date.now()
+            });
+            
+            // ⭐ SINKRON KE HEADER STRUK (master)
+            const headerData = {
+              storeName: storeName,
+              address: storeAddress,
+              phone: storePhone,
+              note: footerNote || 'Terima kasih',
+              updatedAt: Date.now()
+            };
+            await database.ref('settings/receiptHeader').set(headerData);
+            localStorage.setItem('receiptHeader', JSON.stringify(headerData));
+            
+            // Update logo langsung di page ini
+            updateLogoToko(storeName);
+            
+            // Simpan ke localStorage untuk page lain
+            localStorage.setItem('webpos_store_name', storeName);
+            localStorage.setItem('webpos_store_address', storeAddress);
+            localStorage.setItem('webpos_store_phone', storePhone);
+            
+            // Update document title
+            document.title = `${storeName} - Pengaturan`;
+            
+            Utils.hideLoading();
+            Utils.showToast('Pengaturan toko & header struk disimpan', 'success');
+          } catch (error) {
+            Utils.hideLoading();
+            console.error('Error saving settings:', error);
+            Utils.showToast('Gagal menyimpan pengaturan', 'error');
+          }
+        });
+
+        // ✅ SIMPAN PERUBAHAN NAMA LENGKAP
+        document.getElementById('btnSaveProfile').addEventListener('click', async () => {
+          const newName = document.getElementById('userFullName').value.trim();
+          
+          if (!newName) {
+            Utils.showToast('Nama lengkap tidak boleh kosong', 'error');
+            return;
+          }
+          
+          Utils.showLoading();
+          
+          try {
+            const user = Auth.getCurrentUser();
+            if (!user || !user.uid) {
+              Utils.showToast('User tidak ditemukan', 'error');
+              Utils.hideLoading();
+              return;
+            }
+            
+            // Update ke Firebase Auth profile
+            await auth.currentUser.updateProfile({
+              displayName: newName
+            });
+            
+            // Update ke Realtime Database (users node)
+            await database.ref('users/' + user.uid).update({
+              name: newName,
+              updatedAt: Date.now()
+            });
+            
+            // Update local storage/session
+            const sessionData = JSON.parse(localStorage.getItem('webpos_session') || '{}');
+            sessionData.name = newName;
+            localStorage.setItem('webpos_session', JSON.stringify(sessionData));
+            
+            // Update tampilan navbar
+            document.getElementById('userName').textContent = newName;
+            
+            Utils.hideLoading();
+            Utils.showToast('Nama berhasil diperbarui', 'success');
+          } catch (error) {
+            Utils.hideLoading();
+            console.error('Error updating profile:', error);
+            Utils.showToast('Gagal memperbarui nama: ' + error.message, 'error');
+          }
+        });
+
+        // ✅ GANTI PASSWORD DENGAN RE-AUTHENTICATION
+        const passwordModal = document.getElementById('passwordModal');
+        const reauthModal = document.getElementById('reauthModal');
+        const newPasswordInput = document.getElementById('newPasswordInput');
+        const confirmPasswordInput = document.getElementById('confirmPasswordInput');
+        const passwordStrength = document.getElementById('passwordStrength');
+        const passwordMatch = document.getElementById('passwordMatch');
+        const btnConfirmPassword = document.getElementById('btnConfirmPassword');
+        
+        // Variabel sementara untuk menyimpan password baru
+        let pendingNewPassword = null;
+
+        // Buka modal password baru
+        document.getElementById('btnChangePassword').addEventListener('click', () => {
+          passwordModal.classList.add('active');
+          newPasswordInput.value = '';
+          confirmPasswordInput.value = '';
+          passwordStrength.textContent = '';
+          passwordMatch.textContent = '';
+          pendingNewPassword = null;
+          newPasswordInput.focus();
+        });
+
+        // Toggle password visibility
+        window.togglePasswordVisibility = (inputId, btn) => {
+          const input = document.getElementById(inputId);
+          const icon = btn.querySelector('i');
+          if (input.type === 'password') {
+            input.type = 'text';
+            icon.className = 'fas fa-eye-slash';
+          } else {
+            input.type = 'password';
+            icon.className = 'fas fa-eye';
+          }
+        };
+
+        // Close modal functions
+        window.closePasswordModal = () => {
+          passwordModal.classList.remove('active');
+        };
+
+        window.closeReauthModal = () => {
+          reauthModal.classList.remove('active');
+          pendingNewPassword = null;
+        };
+
+        // Check password strength real-time
+        newPasswordInput.addEventListener('input', (e) => {
+          const val = e.target.value;
+          if (val.length === 0) {
+            passwordStrength.textContent = '';
+          } else if (val.length < 6) {
+            passwordStrength.textContent = '⚠️ Password terlalu pendek (minimal 6 karakter)';
+            passwordStrength.className = 'password-strength-weak';
+          } else if (val.length < 8) {
+            passwordStrength.textContent = '✓ Cukup kuat';
+            passwordStrength.className = 'password-strength-medium';
+          } else {
+            passwordStrength.textContent = '✓ Kuat';
+            passwordStrength.className = 'password-strength-strong';
+          }
+          checkPasswordMatch();
+        });
+
+        // Check password match real-time
+        confirmPasswordInput.addEventListener('input', checkPasswordMatch);
+
+        function checkPasswordMatch() {
+          const pass1 = newPasswordInput.value;
+          const pass2 = confirmPasswordInput.value;
+          
+          if (pass2.length === 0) {
+            passwordMatch.textContent = '';
+            return;
+          }
+          
+          if (pass1 === pass2) {
+            passwordMatch.textContent = '✓ Password cocok';
+            passwordMatch.className = 'password-match-success';
+            btnConfirmPassword.disabled = false;
+          } else {
+            passwordMatch.textContent = '✗ Password tidak cocok';
+            passwordMatch.className = 'password-match-error';
+            btnConfirmPassword.disabled = true;
+          }
+        }
+
+        // Step 1: Submit password change (buka modal re-auth)
+        window.submitPasswordChange = () => {
+          const newPass = newPasswordInput.value;
+          const confirmPass = confirmPasswordInput.value;
+
+          if (newPass.length < 6) {
+            Utils.showToast('Password minimal 6 karakter', 'error');
+            newPasswordInput.focus();
+            return;
+          }
+
+          if (newPass !== confirmPass) {
+            Utils.showToast('Password tidak cocok', 'error');
+            confirmPasswordInput.focus();
+            return;
+          }
+
+          // Simpan password baru sementara
+          pendingNewPassword = newPass;
+          
+          // Tutup modal password, buka modal re-auth
+          closePasswordModal();
+          
+          // Buka modal minta password lama
+          document.getElementById('oldPasswordInput').value = '';
+          reauthModal.classList.add('active');
+          document.getElementById('oldPasswordInput').focus();
+        };
+
+        // Step 2: Submit re-authentication dan update password
+        window.submitReauth = async () => {
+          const oldPassword = document.getElementById('oldPasswordInput').value;
+          
+          if (!oldPassword) {
+            Utils.showToast('Password lama wajib diisi', 'error');
+            return;
+          }
+
+          Utils.showLoading();
+          
+          try {
+            const user = auth.currentUser;
+            if (!user || !user.email) {
+              Utils.showToast('Session tidak valid', 'error');
+              Utils.hideLoading();
+              return;
+            }
+            
+            // Buat credential dengan email dan password lama
+            const credential = firebase.auth.EmailAuthProvider.credential(
+              user.email, 
+              oldPassword
+            );
+            
+            // Re-authenticate user
+            await user.reauthenticateWithCredential(credential);
+            
+            // Sekarang baru update password ke yang baru
+            await user.updatePassword(pendingNewPassword);
+            
+            closeReauthModal();
+            pendingNewPassword = null;
+            Utils.hideLoading();
+            Utils.showToast('Password berhasil diubah', 'success');
+          } catch (error) {
+            Utils.hideLoading();
+            console.error('Error reauth/password change:', error);
+            
+            if (error.code === 'auth/wrong-password') {
+              Utils.showToast('Password lama salah', 'error');
+              document.getElementById('oldPasswordInput').focus();
+            } else if (error.code === 'auth/too-many-requests') {
+              Utils.showToast('Terlalu banyak percobaan. Coba lagi nanti.', 'error');
+            } else if (error.code === 'auth/weak-password') {
+              Utils.showToast('Password baru terlalu lemah', 'error');
+            } else {
+              Utils.showToast('Gagal: ' + error.message, 'error');
+            }
+          }
+        };
+
+        // Close modal on overlay click
+        passwordModal.addEventListener('click', (e) => {
+          if (e.target === passwordModal) {
+            closePasswordModal();
+          }
+        });
+
+        reauthModal.addEventListener('click', (e) => {
+          if (e.target === reauthModal) {
+            closeReauthModal();
+          }
+        });
+
+        // Enter key handlers
+        confirmPasswordInput.addEventListener('keypress', (e) => {
+          if (e.key === 'Enter') {
+            submitPasswordChange();
+          }
+        });
+
+        document.getElementById('oldPasswordInput').addEventListener('keypress', (e) => {
+          if (e.key === 'Enter') {
+            submitReauth();
+          }
+        });
+
+        // Clear data
+        document.getElementById('btnClearData').addEventListener('click', () => {
+          Utils.confirm('Hapus semua data? Tindakan ini tidak dapat dibatalkan!', () => {
+            window.location.href = 'page-reset.html';
+          });
+        });
+
+                // ===== RENDER MENU SIDEBAR CONFIG =====
+        (function renderMenuConfig(){
+          const menuItems = [
+            { key: 'menu_kasir', label: 'Kasir', icon: 'fa-cash-register', def: true },
+            { key: 'menu_produk', label: 'Produk', icon: 'fa-box', def: true },
+            { key: 'menu_riwayat', label: 'Riwayat Transaksi', icon: 'fa-history', def: true },
+            { key: 'menu_kas', label: 'Kas Management', icon: 'fa-wallet', def: true },
+            { key: 'menu_pembelian', label: 'Pembelian / Restock', icon: 'fa-shopping-cart', def: true },
+            { key: 'menu_hutang', label: 'Hutang & Piutang', icon: 'fa-hand-holding-usd', def: true },
+            { key: 'menu_laporan', label: 'Laporan Penjualan', icon: 'fa-chart-bar', def: true },
+            { key: 'menu_laporan_stok', label: 'Laporan Stok', icon: 'fa-boxes', def: true },
+            { key: 'menu_terlaris', label: 'Barang Terlaris', icon: 'fa-crown', def: true },
+            { key: 'menu_telegram', label: 'Saldo Telegram', icon: 'fa-telegram', def: true },
+            { key: 'menu_pelanggan', label: 'Data Pelanggan', icon: 'fa-users', def: true },
+            { key: 'menu_pengguna', label: 'Pengguna', icon: 'fa-user-cog', def: false },
+            { key: 'menu_backup', label: 'Backup & Sync', icon: 'fa-cloud-upload-alt', def: true },
+            { key: 'menu_log', label: 'Log Aktivitas', icon: 'fa-history', def: false },
+            { key: 'menu_printer', label: 'Printer & Struk', icon: 'fa-print', def: true },
+            { key: 'menu_reset', label: 'Reset Data', icon: 'fa-trash-alt', def: false },
+            // Menu tambahan (default mati)
+            { key: 'menu_struk_digital', label: 'Struk Digital (WA/Telegram)', icon: 'fa-receipt', def: false, new: true },
+            { key: 'menu_stok_alert', label: 'Notifikasi Stok Menipis', icon: 'fa-bell', def: false, new: true },
+            { key: 'menu_member', label: 'Member & Poin', icon: 'fa-id-card', def: false, new: true },
+            { key: 'menu_supplier', label: 'Manajemen Supplier', icon: 'fa-truck', def: false, new: true },
+            { key: 'menu_katalog', label: 'Katalog Online', icon: 'fa-globe', def: false, new: true },
+            { key: 'menu_reservasi', label: 'Reservasi / Booking', icon: 'fa-calendar-check', def: false, new: true },
+            { key: 'menu_multi_cabang', label: 'Multi Cabang', icon: 'fa-store', def: false, new: true },
+            { key: 'menu_owner_keuangan', label: 'Laporan Keuangan (Owner)', icon: 'fa-lock', def: false, new: true }
+          ];
+
+          const box = document.getElementById('menuConfigList');
+          if(!box) return;
+          const saved = JSON.parse(localStorage.getItem('webpos_menu_config') || '{}');
+          
+          box.innerHTML = menuItems.map(it => {
+            const on = saved[it.key] !== undefined ? saved[it.key] : it.def;
+            return `
+              <div class="setting-item">
+                <div class="setting-info" style="display:flex;align-items:center;gap:0.75rem">
+                  <i class="fas ${it.icon}" style="color:var(--primary);width:20px;text-align:center"></i>
+                  <div>
+                    <div class="setting-label" style="margin-bottom:0">${it.label} ${it.new ? '<span style="font-size:0.65rem;background:var(--warning);color:#fff;padding:0.1rem 0.4rem;border-radius:0.25rem;margin-left:0.25rem">NEW</span>' : ''}</div>
+                  </div>
+                </div>
+                <label class="toggle-switch">
+                  <input type="checkbox" class="menu-cb" data-key="${it.key}" ${on ? 'checked' : ''}>
+                  <span class="toggle-slider"></span>
+                </label>
+              </div>`;
+          }).join('');
+          
+          box.querySelectorAll('.menu-cb').forEach(cb => {
+            cb.addEventListener('change', function(){
+              const cfg = JSON.parse(localStorage.getItem('webpos_menu_config') || '{}');
+              cfg[this.dataset.key] = this.checked;
+              localStorage.setItem('webpos_menu_config', JSON.stringify(cfg));
+              localStorage.setItem('webpos_menu_broadcast', Date.now().toString());
+              Utils.showToast(this.checked ? 'Menu diaktifkan' : 'Menu dinonaktifkan', 'success');
+            });
+          });
+        })();
+
+         // ⭐ TAMBAH 1 BARIS INI
+        // applyMenuVisibility - aman kalau fungsi tidak ada
+        if (typeof applyMenuVisibility === 'function') {
+          applyMenuVisibility();
+        }
+
+                // ===== TAB SWITCHING =====
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+            btn.classList.add('active');
+            document.getElementById(btn.dataset.tab).classList.add('active');
+            // Simpan tab aktif
+            localStorage.setItem('settings_active_tab', btn.dataset.tab);
+          });
+        });
+        // Restore tab
+        const savedTab = localStorage.getItem('settings_active_tab');
+        if (savedTab && document.getElementById(savedTab)) {
+          document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+          document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+          document.querySelector(`.tab-btn[data-tab="${savedTab}"]`)?.classList.add('active');
+          document.getElementById(savedTab)?.classList.add('active');
+        }
+
+        // ===== DARK MODE FIX =====
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        const htmlEl = document.documentElement;
+        // Cek dari localStorage langsung (fallback kalau Utils tidak set)
+        const isDark = localStorage.getItem('webpos_theme') === 'dark' || Utils.Theme.isDarkMode();
+        darkModeToggle.checked = isDark;
+        if (isDark) htmlEl.setAttribute('data-theme', 'dark');
+        else htmlEl.setAttribute('data-theme', 'light');
+
+        darkModeToggle.addEventListener('change', () => {
+          const on = darkModeToggle.checked;
+          htmlEl.setAttribute('data-theme', on ? 'dark' : 'light');
+          localStorage.setItem('webpos_theme', on ? 'dark' : 'light');
+          localStorage.setItem('webpos_theme_broadcast', Date.now().toString());
+          // Panggil Utils juga kalau ada
+          if (Utils.Theme.setDarkMode) Utils.Theme.setDarkMode(on);
+        });
+
+        document.getElementById('btnTheme').addEventListener('click', () => {
+          const current = htmlEl.getAttribute('data-theme') === 'dark';
+          const next = !current;
+          htmlEl.setAttribute('data-theme', next ? 'dark' : 'light');
+          localStorage.setItem('webpos_theme', next ? 'dark' : 'light');
+          darkModeToggle.checked = next;
+          if (Utils.Theme.setDarkMode) Utils.Theme.setDarkMode(next);
+        });
+
+        // ===== BLUETOOTH PRINTER =====
+        const printerMac = localStorage.getItem('webpos_printer_mac');
+        const printerName = localStorage.getItem('webpos_printer_name');
+        const statusBox = document.getElementById('printerStatusBox');
+        const statusText = document.getElementById('printerStatusText');
+        const macText = document.getElementById('printerMacText');
+        const btnTest = document.getElementById('btnTestPrint');
+        const btnDisconnect = document.getElementById('btnDisconnectPrinter');
+
+        function updatePrinterUI() {
+          const mac = localStorage.getItem('webpos_printer_mac');
+          const name = localStorage.getItem('webpos_printer_name');
+          if (mac) {
+            statusBox.style.background = 'rgba(16,185,129,0.1)';
+            statusBox.style.border = '1.5px solid var(--success)';
+            statusText.textContent = name || 'Printer Terhubung';
+            statusText.style.color = 'var(--success)';
+            macText.textContent = mac;
+            btnTest.disabled = false;
+            btnDisconnect.disabled = false;
+          } else {
+            statusBox.style.background = 'var(--bg-secondary)';
+            statusBox.style.border = 'none';
+            statusText.textContent = 'Tidak terhubung';
+            statusText.style.color = 'var(--text-primary)';
+            macText.textContent = '-';
+            btnTest.disabled = true;
+            btnDisconnect.disabled = true;
+          }
+        }
+        updatePrinterUI();
+
+        // Scan Bluetooth
+        document.getElementById('btnScanBluetooth').addEventListener('click', async () => {
+          const container = document.getElementById('bluetoothDeviceList');
+          const list = document.getElementById('btDevicesContainer');
+          list.innerHTML = '<div style="text-align:center;padding:1rem;color:var(--text-muted);"><i class="fas fa-spinner fa-spin"></i> Mencari...</div>';
+          container.style.display = 'block';
+
+          // Coba pakai bluetoothSerial (Cordova/Capacitor)
+          if (window.bluetoothSerial) {
+            window.bluetoothSerial.list((devices) => {
+              renderBTDevices(devices);
+            }, (err) => {
+              list.innerHTML = `<div style="color:var(--danger);text-align:center;">Gagal scan: ${err}</div>`;
+            });
+          } else {
+            // Fallback: simulasi/demo mode
+            setTimeout(() => {
+              renderBTDevices([
+                { name: 'Printer Thermal XP-58', id: '00:11:22:33:44:55' },
+                { name: 'Bluetooth Printer', id: '66:77:88:99:AA:BB' }
+              ], true);
+            }, 1500);
+          }
+        });
+
+        function renderBTDevices(devices, isDemo = false) {
+          const list = document.getElementById('btDevicesContainer');
+          if (!devices || devices.length === 0) {
+            list.innerHTML = '<div style="text-align:center;color:var(--text-muted);">Tidak ada perangkat ditemukan</div>';
+            return;
+          }
+          list.innerHTML = devices.map(d => `
+            <div class="bt-device-item" onclick="connectPrinter('${d.id}', '${d.name.replace(/'/g,"\\'")}')">
+              <div class="bt-device-info">
+                <span class="bt-device-name"><i class="fas fa-print" style="margin-right:0.35rem;color:var(--primary);"></i>${d.name || 'Unknown'}</span>
+                <span class="bt-device-mac">${d.id}</span>
+              </div>
+              <button class="btn btn-sm btn-primary" style="padding:0.4rem 0.75rem;font-size:0.75rem;">
+                <i class="fas fa-link"></i> Hubungkan
+              </button>
+            </div>
+          `).join('');
+          if (isDemo) {
+            list.innerHTML += '<div style="font-size:0.7rem;color:var(--warning);text-align:center;margin-top:0.5rem;">⚠️ Mode demo (browser). Install APK untuk scan real.</div>';
+          }
+        }
+
+        window.connectPrinter = (mac, name) => {
+          localStorage.setItem('webpos_printer_mac', mac);
+          localStorage.setItem('webpos_printer_name', name || 'Printer');
+          Utils.showToast(`Printer ${name} tersimpan`, 'success');
+          updatePrinterUI();
+          document.getElementById('bluetoothDeviceList').style.display = 'none';
+        };
+
+        // Test Print
+        document.getElementById('btnTestPrint').addEventListener('click', () => {
+          const mac = localStorage.getItem('webpos_printer_mac');
+          if (!mac) return;
+          if (window.bluetoothSerial) {
+            const ESC = '\x1B';
+            const GS = '\x1D';
+            const data = ESC + '\x40' + ESC + '\x61\x01' + 'TEST PRINT\n' + 'WebPOS Printer OK\n' + '\n\n\n' + GS + '\x56\x41\x03';
+            window.bluetoothSerial.connect(mac, () => {
+              window.bluetoothSerial.write(data, () => {
+                window.bluetoothSerial.disconnect(() => {}, () => {});
+                Utils.showToast('Test print berhasil', 'success');
+              }, (err) => Utils.showToast('Gagal print: ' + err, 'error'));
+            }, (err) => Utils.showToast('Gagal konek: ' + err, 'error'));
+          } else {
+            Utils.showToast('Test print (simulasi browser) - OK', 'info');
+          }
+        });
+
+        // Disconnect
+        document.getElementById('btnDisconnectPrinter').addEventListener('click', () => {
+          localStorage.removeItem('webpos_printer_mac');
+          localStorage.removeItem('webpos_printer_name');
+          updatePrinterUI();
+          Utils.showToast('Printer diputuskan', 'info');
+        });
+        
+        // Dropdown menus
+        document.querySelectorAll('[data-dropdown]').forEach(dropdown => {
+          const toggle = dropdown.querySelector('.nav-dropdown-toggle');
+          if (toggle) {
+            toggle.addEventListener('click', (e) => {
+              e.preventDefault();
+              dropdown.classList.toggle('open');
+            });
+          }
+        });
+      }
+    });
+  </script>
+
+  <!-- Modal Ganti Password Baru -->
+  <div class="modal-overlay" id="passwordModal">
+    <div class="modal-content" style="max-width: 400px;">
+      <div class="modal-header">
+        <h3 class="modal-title"><i class="fas fa-key"></i> Ganti Password</h3>
+        <button class="modal-close" onclick="closePasswordModal()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label class="form-label">Password Baru</label>
+          <div style="position: relative;">
+            <input type="password" class="form-input" id="newPasswordInput" placeholder="Minimal 6 karakter" style="padding-right: 2.5rem;">
+            <button type="button" class="toggle-password" onclick="togglePasswordVisibility('newPasswordInput', this)" style="position: absolute; right: 0.75rem; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--text-muted); cursor: pointer;">
+              <i class="fas fa-eye"></i>
+            </button>
+          </div>
+          <div id="passwordStrength" style="margin-top: 0.5rem; font-size: 0.75rem; color: var(--text-muted);"></div>
+        </div>
+        
+        <div class="form-group">
+          <label class="form-label">Konfirmasi Password</label>
+          <div style="position: relative;">
+            <input type="password" class="form-input" id="confirmPasswordInput" placeholder="Ketik ulang password" style="padding-right: 2.5rem;">
+            <button type="button" class="toggle-password" onclick="togglePasswordVisibility('confirmPasswordInput', this)" style="position: absolute; right: 0.75rem; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--text-muted); cursor: pointer;">
+              <i class="fas fa-eye"></i>
+            </button>
+          </div>
+          <div id="passwordMatch" style="margin-top: 0.5rem; font-size: 0.75rem;"></div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" onclick="closePasswordModal()">Batal</button>
+        <button class="btn btn-primary" id="btnConfirmPassword" onclick="submitPasswordChange()">
+          <i class="fas fa-arrow-right"></i> Lanjutkan
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Re-Authentication (Password Lama) -->
+  <div class="modal-overlay" id="reauthModal">
+    <div class="modal-content" style="max-width: 400px;">
+      <div class="modal-header">
+        <h3 class="modal-title"><i class="fas fa-shield-alt"></i> Verifikasi Keamanan</h3>
+        <button class="modal-close" onclick="closeReauthModal()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p style="margin-bottom: 1rem; color: var(--text-secondary); font-size: 0.875rem;">
+          Demi keamanan, masukkan password <strong>lama</strong> Anda untuk verifikasi:
+        </p>
+        <div class="form-group">
+          <label class="form-label">Password Lama</label>
+          <div style="position: relative;">
+            <input type="password" class="form-input" id="oldPasswordInput" placeholder="Masukkan password lama" style="padding-right: 2.5rem;">
+            <button type="button" class="toggle-password" onclick="togglePasswordVisibility('oldPasswordInput', this)" style="position: absolute; right: 0.75rem; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--text-muted); cursor: pointer;">
+              <i class="fas fa-eye"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-outline" onclick="closeReauthModal()">Batal</button>
+        <button class="btn btn-primary" id="btnConfirmReauth" onclick="submitReauth()">
+          <i class="fas fa-check"></i> Verifikasi & Ubah Password
+        </button>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
