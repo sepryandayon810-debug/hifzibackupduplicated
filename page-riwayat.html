@@ -1317,9 +1317,9 @@ if (searchInput) {
       el('btnFilter').addEventListener('click', loadTransactions);
       el('btnExport').addEventListener('click', exportData);
 
-      document.getElementById('strukModal').addEventListener('click', (e) => {
-        if (e.target === document.getElementById('strukModal')) closeStrukModal();
-      });
+      document.getElementById('editStrukModal').addEventListener('click', (e) => {
+  if (e.target === document.getElementById('editStrukModal')) closeEditStrukModal();
+});
 
       setDateRange('today');
       loadTransactions();
@@ -2313,8 +2313,20 @@ function centerText(text, width) {
   return ' '.repeat(left) + text + ' '.repeat(right);
 }
 
-    function showStrukModal(tx) {
+   function showStrukModal(tx) {
   lastTransactionData = tx;
+  
+  // ⭐ Jika transaksi topup/tarik dan data pengirim/penerima kosong, tampilkan edit dulu
+  if ((tx.type === 'topup' || tx.type === 'tarik') && 
+      !tx.senderName && !tx.receiverName && !tx.targetName && !tx.customerName) {
+    openEditStrukModal(tx);
+    return;
+  }
+  
+  renderStrukPreview(tx);
+}
+
+function renderStrukPreview(tx) {
   const paper = document.getElementById('strukPaper');
   
   let strukContent = '';
@@ -2390,6 +2402,38 @@ function centerText(text, width) {
       }
     }
 
+    // ===== MODAL EDIT STRUK =====
+function openEditStrukModal(tx) {
+  // Isi default value kalau ada
+  document.getElementById('editSenderName').value = tx.senderName || tx.customerName || tx.targetName || '';
+  document.getElementById('editSenderPhone').value = tx.senderPhone || tx.senderAccount || tx.phoneNumber || tx.phone || '';
+  document.getElementById('editSenderBank').value = tx.senderBank || tx.sourceBank || tx.provider || '';
+  
+  document.getElementById('editReceiverName').value = tx.receiverName || tx.withdrawName || tx.targetName || tx.customerName || '';
+  document.getElementById('editReceiverPhone').value = tx.receiverPhone || tx.receiverAccount || tx.withdrawAccount || tx.phoneNumber || tx.phone || '';
+  document.getElementById('editReceiverBank').value = tx.receiverBank || tx.withdrawBank || tx.targetBank || '';
+  
+  document.getElementById('editStrukModal').classList.add('active');
+}
+
+function closeEditStrukModal() {
+  document.getElementById('editStrukModal').classList.remove('active');
+}
+
+function saveEditStruk() {
+  // Update lastTransactionData dengan input user
+  lastTransactionData.senderName = document.getElementById('editSenderName').value || '-';
+  lastTransactionData.senderPhone = document.getElementById('editSenderPhone').value || '-';
+  lastTransactionData.senderBank = document.getElementById('editSenderBank').value || '-';
+  
+  lastTransactionData.receiverName = document.getElementById('editReceiverName').value || '-';
+  lastTransactionData.receiverPhone = document.getElementById('editReceiverPhone').value || '-';
+  lastTransactionData.receiverBank = document.getElementById('editReceiverBank').value || '-';
+  
+  closeEditStrukModal();
+  renderStrukPreview(lastTransactionData);
+}
+
     function printTransaction(id) {
       const t = allTransactions.find(tr => tr.id === id);
       if (!t) return;
@@ -2440,5 +2484,60 @@ function centerText(text, width) {
       }, duration);
     }
   </script>
+<!-- Modal Edit Struk -->
+<div class="struk-modal-overlay" id="editStrukModal" style="z-index: 10001;">
+  <div class="struk-modal" style="max-width: 400px;">
+    <div class="struk-modal-header">
+      <span class="struk-modal-title"><i class="fas fa-edit" style="color: var(--primary)"></i> Edit Info Struk</span>
+      <button class="struk-modal-close" onclick="closeEditStrukModal()"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="struk-modal-body" style="padding: 1.25rem;">
+      
+      <div style="font-weight: 600; font-size: 0.85rem; color: var(--primary); margin-bottom: 0.75rem;">
+        <i class="fas fa-user"></i> PENGIRIM
+      </div>
+      <div class="form-group" style="margin-bottom: 0.75rem;">
+        <label class="form-label" style="font-size: 0.8rem;">Nama</label>
+        <input type="text" class="form-input" id="editSenderName" placeholder="Nama pengirim">
+      </div>
+      <div class="form-group" style="margin-bottom: 0.75rem;">
+        <label class="form-label" style="font-size: 0.8rem;">No / Rekening</label>
+        <input type="text" class="form-input" id="editSenderPhone" placeholder="Nomor HP / Rekening">
+      </div>
+      <div class="form-group" style="margin-bottom: 1rem;">
+        <label class="form-label" style="font-size: 0.8rem;">Bank / Aplikasi</label>
+        <input type="text" class="form-input" id="editSenderBank" placeholder="BCA / DANA / OVO">
+      </div>
+
+      <div style="border-top: 1px solid var(--border-color); margin: 1rem 0;"></div>
+
+      <div style="font-weight: 600; font-size: 0.85rem; color: var(--primary); margin-bottom: 0.75rem;">
+        <i class="fas fa-user"></i> PENERIMA
+      </div>
+      <div class="form-group" style="margin-bottom: 0.75rem;">
+        <label class="form-label" style="font-size: 0.8rem;">Nama</label>
+        <input type="text" class="form-input" id="editReceiverName" placeholder="Nama penerima">
+      </div>
+      <div class="form-group" style="margin-bottom: 0.75rem;">
+        <label class="form-label" style="font-size: 0.8rem;">No / Rekening</label>
+        <input type="text" class="form-input" id="editReceiverPhone" placeholder="Nomor HP / Rekening">
+      </div>
+      <div class="form-group" style="margin-bottom: 1rem;">
+        <label class="form-label" style="font-size: 0.8rem;">Bank / Aplikasi</label>
+        <input type="text" class="form-input" id="editReceiverBank" placeholder="BCA / DANA / Tunai">
+      </div>
+
+    </div>
+    <div class="struk-actions">
+      <button class="btn btn-secondary" onclick="closeEditStrukModal()">
+        <i class="fas fa-times"></i> Batal
+      </button>
+      <button class="btn btn-primary" onclick="saveEditStruk()">
+        <i class="fas fa-save"></i> Simpan & Lanjut
+      </button>
+    </div>
+  </div>
+</div>
+  
 </body>
 </html>
