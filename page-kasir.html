@@ -3448,11 +3448,14 @@ function goToTarik() {
 
 // ⭐ TAMBAHKAN INI (setelah goToTarik)
 function openKasMasuk() {
+  localStorage.setItem('fromKasir', 'true');
   window.location.href = 'page-kas-masuk.html';
 }
 function openKasKeluar() {
+  localStorage.setItem('fromKasir', 'true');
   window.location.href = 'page-kas-keluar.html';
 }
+    
 function openBayarHutang() {
   window.location.href = 'page-hutang.html';
 }
