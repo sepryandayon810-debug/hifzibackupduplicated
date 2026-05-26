@@ -1467,6 +1467,40 @@ html,body{overflow-x:hidden;max-width:100vw}
     font-size:0.85rem !important;
   }
 }
+
+/* ==========================================
+   FIX: WARNA BADGE STOK DI LIST VIEW
+   ========================================== */
+
+/* Badge stok LOW (≤5 sisa) di list view — text HITAM supaya kontras */
+.products-grid.list-view .product-stock-badge.low {
+  background: #f59e0b !important; /* orange kuning */
+  color: #1f2937 !important;        /* text HITAM */
+  font-weight: 700 !important;
+}
+
+/* Badge stok EMPTY (habis) di list view — text PUTIH (sudah ok, tapi pastikan) */
+.products-grid.list-view .product-stock-badge.empty {
+  background: #ef4444 !important; /* merah */
+  color: #ffffff !important;      /* text PUTIH */
+  font-weight: 700 !important;
+}
+
+/* Badge stok NORMAL di list view — text PUTIH (default hijau) */
+.products-grid.list-view .product-stock-badge {
+  color: #ffffff !important;
+  font-weight: 600 !important;
+}
+
+/* Dark mode: LOW tetap hitam, EMPTY tetap putih */
+[data-theme="dark"] .products-grid.list-view .product-stock-badge.low {
+  background: #fbbf24 !important;
+  color: #1f2937 !important;
+}
+[data-theme="dark"] .products-grid.list-view .product-stock-badge.empty {
+  background: #f87171 !important;
+  color: #ffffff !important;
+}
     
 </style>
 </head>
