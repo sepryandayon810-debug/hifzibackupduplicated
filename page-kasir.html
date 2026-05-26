@@ -2596,7 +2596,7 @@ function renderProducts() {
       stockText = 'Habis';
     } else if (p.stock <= 5) {
       stockClass = 'low';
-      stockText = p.stock + ' sisa';
+      stockText = p.stock + '';
     } else {
       stockClass = '';
       stockText = p.stock;
