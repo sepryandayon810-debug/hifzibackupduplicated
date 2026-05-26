@@ -1469,37 +1469,46 @@ html,body{overflow-x:hidden;max-width:100vw}
 }
 
 /* ==========================================
-   FIX: WARNA BADGE STOK DI LIST VIEW
+   FIX: HILANGKAN TEXT DARI BADGE STOK DI LIST VIEW
    ========================================== */
 
-/* Badge stok LOW (≤5 sisa) di list view — text HITAM supaya kontras */
-.products-grid.list-view .product-stock-badge.low {
-  background: #f59e0b !important; /* orange kuning */
-  color: #1f2937 !important;        /* text HITAM */
-  font-weight: 700 !important;
-}
-
-/* Badge stok EMPTY (habis) di list view — text PUTIH (sudah ok, tapi pastikan) */
-.products-grid.list-view .product-stock-badge.empty {
-  background: #ef4444 !important; /* merah */
-  color: #ffffff !important;      /* text PUTIH */
-  font-weight: 700 !important;
-}
-
-/* Badge stok NORMAL di list view — text PUTIH (default hijau) */
+/* Semua badge stok di list view: hanya lingkaran warna, tanpa text */
 .products-grid.list-view .product-stock-badge {
-  color: #ffffff !important;
-  font-weight: 600 !important;
+  font-size: 0 !important;      /* Hilangkan text */
+  width: 10px !important;       /* Kecilkan lingkaran */
+  height: 10px !important;
+  min-width: 10px !important;
+  min-height: 10px !important;
+  border-radius: 50% !important;
+  padding: 0 !important;
+  top: -2px !important;         /* Posisi lebih rapat */
+  right: -2px !important;
 }
 
-/* Dark mode: LOW tetap hitam, EMPTY tetap putih */
+/* Badge LOW (≤5): background orange */
+.products-grid.list-view .product-stock-badge.low {
+  background: #f59e0b !important;
+}
+
+/* Badge EMPTY (habis): background merah */
+.products-grid.list-view .product-stock-badge.empty {
+  background: #ef4444 !important;
+}
+
+/* Badge NORMAL (>5): background hijau */
+.products-grid.list-view .product-stock-badge:not(.low):not(.empty) {
+  background: #10b981 !important;
+}
+
+/* Dark mode */
 [data-theme="dark"] .products-grid.list-view .product-stock-badge.low {
   background: #fbbf24 !important;
-  color: #1f2937 !important;
 }
 [data-theme="dark"] .products-grid.list-view .product-stock-badge.empty {
   background: #f87171 !important;
-  color: #ffffff !important;
+}
+[data-theme="dark"] .products-grid.list-view .product-stock-badge:not(.low):not(.empty) {
+  background: #34d399 !important;
 }
     
 </style>
